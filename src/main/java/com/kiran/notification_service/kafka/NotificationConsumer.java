@@ -24,6 +24,7 @@ public class NotificationConsumer {
             emailService.sendEmail(request);
         } catch (Exception e) {
             log.error("Error processing notification: {}", e.getMessage());
+            throw new RuntimeException("Failed to process notification: " + e.getMessage());
         }
     }
 }
