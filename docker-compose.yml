@@ -29,3 +29,9 @@ services:
       POSTGRES_DB: notificationdb
       POSTGRES_USER: kiran
       POSTGRES_PASSWORD: kiran123
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"

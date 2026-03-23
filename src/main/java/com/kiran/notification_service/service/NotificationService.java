@@ -20,8 +20,16 @@ public class NotificationService {
     private final NotificationLogRepository notificationLogRepository;
     private final NotificationProducer notificationProducer;
     private final ObjectMapper objectMapper;
+    private final RateLimiterService rateLimiterService;
+
 
     public void sendNotification(NotificationRequest request) {
+
+        // 1. Check rate limit
+        if (!rateLimiterService.isAllowed(request.getRecipient())) {
+            throw new RuntimeException("Rate limit exceeded for recipient: " + request.getRecipient());
+        }
+
         // 1. Save to DB with PENDING status
         NotificationLog logdb = NotificationLog.builder()
                 .recipient(request.getRecipient())
